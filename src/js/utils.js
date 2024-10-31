@@ -48,8 +48,8 @@ export const handleCalculator = (
     (part) => part.userData.name === selectedButton
   );
 
-  gsap.to(button.position, { z: -0.05, duration: 0.1 });
-  gsap.to(button.position, { z: 0, duration: 0.1, delay: 0.1 });
+  gsap.to(button?.position, { z: -0.05, duration: 0.1 });
+  gsap.to(button?.position, { z: 0, duration: 0.1, delay: 0.1 });
 
   if (selectedButton === "." && expression.includes(".")) {
     return expression;
@@ -60,10 +60,14 @@ export const handleCalculator = (
   }
 
   if (
-    expression.length === 0 &&
-    (selectedButton === "+" || selectedButton === "*" || selectedButton === "/")
+    !expression.length &&
+    (selectedButton === "+" ||
+      selectedButton === "-" ||
+      selectedButton === "*" ||
+      selectedButton === "/" ||
+      selectedButton === "%")
   ) {
-    return (expression = "0");
+    return "0";
   }
 
   if (expression === "0" && !isNaN(selectedButton)) {
@@ -74,6 +78,7 @@ export const handleCalculator = (
     (selectedButton === "+" ||
       selectedButton === "-" ||
       selectedButton === "*" ||
+      selectedButton === "%" ||
       selectedButton === "/") &&
     isNaN(expression[expression.length - 1])
   ) {
@@ -83,11 +88,13 @@ export const handleCalculator = (
   if (selectedButton === "=" && isNaN(expression[expression.length - 1])) {
     return expression;
   }
+  console.log(selectedButton);
 
   if (
     selectedButton === "+" ||
     selectedButton === "-" ||
     selectedButton === "*" ||
+    selectedButton === "%" ||
     selectedButton === "/"
   ) {
     return eval(expression) + selectedButton;

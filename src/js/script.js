@@ -177,7 +177,7 @@ window.addEventListener("keydown", (e) => {
   if (numbers) {
     selectedButton = e.key;
 
-    if (numbers[selectedButton]) {
+    if (numbers[selectedButton] || selectedButton === "%") {
       playSound(clickSound);
       expression = handleCalculator(
         selectedButton,
@@ -185,7 +185,8 @@ window.addEventListener("keydown", (e) => {
         calculatorParts
       );
     } else if (selectedButton === "Backspace") {
-      expression = expression.slice(0, -1);
+      expression = expression.length !== 1 ? expression.slice(0, -1) : "";
+      !expression && clearScene(displayGroup);
     } else if (selectedButton === "Enter") {
       expression = String(eval(expression));
     } else if (selectedButton === "Delete") {
