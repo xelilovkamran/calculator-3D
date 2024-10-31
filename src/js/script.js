@@ -3,7 +3,12 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { handleCalculator, playSound, renderDisplay } from "./utils";
+import {
+  clearScene,
+  handleCalculator,
+  playSound,
+  renderDisplay,
+} from "./utils";
 
 /**
  * Variables
@@ -62,8 +67,6 @@ gltfLoader.load("models/calculator.glb", (gltf) => {
 
   scene.add(gltf.scene);
 });
-
-console.log(calculatorParts);
 
 gltfLoader.load("models/numbers.glb", (gltf) => {
   gltf.scene.children.forEach((child) => {
@@ -169,9 +172,11 @@ window.addEventListener("click", (event) => {
   }
 });
 
-window.addEventListener("keypress", (e) => {
+window.addEventListener("keydown", (e) => {
+  e.preventDefault();
   if (numbers) {
     selectedButton = e.key;
+
     if (numbers[selectedButton]) {
       playSound(clickSound);
       expression = handleCalculator(
@@ -179,6 +184,13 @@ window.addEventListener("keypress", (e) => {
         String(expression),
         calculatorParts
       );
+    } else if (selectedButton === "Backspace") {
+      expression = expression.slice(0, -1);
+    } else if (selectedButton === "Enter") {
+      expression = String(eval(expression));
+    } else if (selectedButton === "Delete") {
+      expression = "";
+      clearScene(displayGroup);
     }
   }
 });

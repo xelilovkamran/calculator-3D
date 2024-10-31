@@ -6,15 +6,19 @@ export const playSound = (sound) => {
   sound.play();
 };
 
+export const clearScene = (group) => {
+  while (group.children.length) {
+    const object = group.children[0];
+    object.geometry.dispose();
+    object.material.dispose();
+    group.remove(object);
+  }
+};
+
 export const renderDisplay = (expression, displayGroup, numbers) => {
   let width = -0.5;
 
-  while (displayGroup.children.length > 0) {
-    const child = displayGroup.children[0];
-    child.geometry.dispose();
-    child.material.dispose();
-    displayGroup.remove(child);
-  }
+  clearScene(displayGroup);
 
   expression.split("").forEach((char, i) => {
     if (char === " ") return;
@@ -70,12 +74,14 @@ export const handleCalculator = (
     (selectedButton === "+" ||
       selectedButton === "-" ||
       selectedButton === "*" ||
-      // selectedButton === "=" ||
       selectedButton === "/") &&
     isNaN(expression[expression.length - 1])
   ) {
     return expression.split("").slice(0, -1).join("") + selectedButton;
-    // return expression;
+  }
+
+  if (selectedButton === "=" && isNaN(expression[expression.length - 1])) {
+    return expression;
   }
 
   if (
