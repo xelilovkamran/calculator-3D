@@ -51,7 +51,13 @@ export const handleCalculator = (
   gsap.to(button?.position, { z: -0.05, duration: 0.1 });
   gsap.to(button?.position, { z: 0, duration: 0.1, delay: 0.1 });
 
-  if (selectedButton === "." && expression.includes(".")) {
+  if (
+    selectedButton === "." &&
+    expression
+      .split(/[\+\-\*\/\%]/)
+      .at(-1)
+      .includes(".")
+  ) {
     return expression;
   }
 

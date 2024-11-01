@@ -172,7 +172,7 @@ window.addEventListener("click", (event) => {
   }
 });
 
-window.addEventListener("keydown", (e) => {
+window.addEventListener("keypress", (e) => {
   e.preventDefault();
   if (numbers) {
     selectedButton = e.key;
